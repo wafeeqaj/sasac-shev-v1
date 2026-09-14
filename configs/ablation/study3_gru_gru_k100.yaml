@@ -1,0 +1,38 @@
+# Ablation study 3: GRU actor + GRU critic, k = 100, fixed HFETx10.
+# GRU-GRU settings on the fixed-cycle environment.
+# NOTE: the runs used hidden_dim = 256, but the exported GRU_GRU_100 actor
+# (results/checkpoints/mat) has hidden size 128, matching Table II.
+name: study3_gru_gru_k100
+description: "Study 3: GRU-GRU, k=100, fixed HFETx10"
+env: fixed_hfet_10
+agent:
+  actor: gru
+  critic: gru
+  context: 100
+  hidden_actor: 128
+  hidden_critic: 128
+  gru_layers: 2
+  lr_actor: 3.0e-4
+  lr_critic: 3.0e-4
+  lr_alpha: 3.0e-4
+  gamma: 0.99
+  exploration_noise: pink   # roll-out only
+  alpha_weight_decay: 1.0e-3
+  tau: 0.005   # Table II
+  alpha_init: 1.0
+  target_entropy: -2.0   # Table II
+  critic_grad_clip: 0.25   # Table II
+  actor_grad_clip: 1.0
+  q_target_clamp: null
+  log_alpha_min: -10.0
+  alpha_min: null
+  actor_q_reduction: all
+seed: 2
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 50000
+warmup_episodes: 10
+update_every: 3          # matches the FFN lanes' cadence
+actor_update_every: 5    # actor therefore runs every 15 steps, as in study1
+pad_mode: edge
+save_every: 2

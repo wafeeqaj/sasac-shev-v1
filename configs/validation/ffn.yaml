@@ -1,0 +1,17 @@
+# Validation roll-out settings for the FFN-FFN actor as used for Tables III and IV.
+agent: ffn
+context: 1
+initial_obs: [1.0, -1.0, -1.0]
+soc_range: [0.0, 1.0]
+action_max: [263.0, 1523.0]
+# De-normalisation lower bounds were set per drive cycle.
+action_min:
+  FHDS:  [-40.0, 0.0]
+  US06:  [80.0, 1200.0]
+  HHDDT: [-120.0, 0.0]
+pm_range:
+  FHDS:  [-111.0e3, 217.0e3]
+  US06:  [-69.56e3, 417.0e3]
+  HHDDT: [-59.56e3, 206.0e3]
+initial_soc: 0.85
+seed: 2

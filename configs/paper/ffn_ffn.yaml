@@ -1,0 +1,28 @@
+# FFN actor + FFN critic baseline (paper Table II column "FFN": [128, 128], 2 layers).
+name: ffn_ffn
+description: "FFN-FFN baseline, Table II hyper-parameters"
+env: vary_soc_duration
+agent:
+  actor: ffn
+  critic: ffn
+  hidden_actor: 128
+  hidden_critic: 128
+  lr_actor: 1.0e-4
+  lr_critic: 1.0e-4
+  lr_alpha: 1.0e-4
+  alpha_weight_decay: 1.0e-3
+  gamma: 0.99
+  tau: 0.005
+  alpha_init: 1.0
+  target_entropy: -2.0
+  critic_grad_clip: null
+  actor_grad_clip: null
+  log_alpha_min: -10.0
+seed: 1
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 1000000         # transitions (paper: 1M)
+warmup_transitions: 70000
+update_every: 5                  # Table II: FFN training frequency 5 steps
+actor_update_every: 1
+save_every: 2

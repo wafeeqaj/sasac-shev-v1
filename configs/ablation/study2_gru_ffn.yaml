@@ -1,0 +1,35 @@
+# Ablation study 2: GRU actor + FFN critic (k = 1).
+# Trained with hidden size 256.
+name: study2_gru_ffn
+description: "Study 2: GRU actor / FFN critic, k=1, fixed HFETx10"
+env: fixed_hfet_10
+agent:
+  actor: gru
+  critic: ffn
+  context: 1
+  hidden_actor: 256
+  hidden_critic: 256
+  gru_layers: 2
+  lr_actor: 3.0e-4
+  lr_critic: 3.0e-4
+  lr_alpha: 3.0e-4
+  gamma: 0.99
+  exploration_noise: pink   # roll-out only
+  alpha_weight_decay: 1.0e-3
+  tau: 0.005   # Table II
+  alpha_init: 1.0
+  target_entropy: -2.0   # Table II
+  critic_grad_clip: 0.25   # Table II
+  actor_grad_clip: 1.0
+  q_target_clamp: null
+  log_alpha_min: -10.0
+  alpha_min: null
+seed: 2
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 50000
+warmup_episodes: 10
+update_every: 3          # matches the FFN lanes' cadence
+actor_update_every: 5    # actor therefore runs every 15 steps, as in study1
+pad_mode: edge
+save_every: 2

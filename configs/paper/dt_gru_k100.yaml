@@ -1,0 +1,36 @@
+# DT actor + GRU critic, k = 100 (paper: "SAC-DT", Table II column "DT").
+# Table II hyper-parameters exactly as printed: seed 1, lr 1e-4, tau 0.005,
+# critic clip 0.25, 500 episodes, replay capacity 500 episodes.
+name: dt_gru_k100
+description: "DT-GRU agent, k=100, Table II hyper-parameters"
+env: vary_soc_duration
+agent:
+  actor: dt
+  critic: gru
+  context: 100
+  hidden_critic: 128
+  gru_layers: 2
+  dt: {hidden_size: 128, num_heads: 4, num_layers: 1}
+  lr_actor: 1.0e-4
+  lr_critic: 1.0e-4
+  lr_alpha: 1.0e-4
+  gamma: 0.99
+  tau: 0.005
+  alpha_init: 1.0
+  target_entropy: -2.0   # Table II
+  critic_grad_clip: 0.25
+  actor_grad_clip: null
+  actor_q_reduction: last        # actor / alpha loss use the last time step's Q
+  dt_std_scaled_by_alpha: true
+  dt_history_actions: normalized
+seed: 1
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 500             # episodes
+warmup_episodes: 10
+update_every: 3          # matches the FFN lanes' cadence
+actor_update_every: 5    # actor (transformer fwd+bwd) therefore runs every 15 steps, as in study1
+pad_mode: edge
+rtg_init: 0.95
+rtg_update: subtract_normalized
+save_every: 2

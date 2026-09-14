@@ -1,0 +1,37 @@
+# Ablation study 6: GRU-GRU with random initial SOC, duration and EM power scaling.
+# This is the agent validated in Table IV.
+name: study6_gru_gru_vary_all
+description: "Study 6: GRU-GRU, random SOC, duration and EM power (vary_all)"
+env: vary_all
+load_from: results/runs/study5_gru_gru_vary_soc_duration/study5_gru_gru_vary_soc_duration
+agent:
+  actor: gru
+  critic: gru
+  context: 10
+  hidden_actor: 128
+  hidden_critic: 128
+  gru_layers: 2
+  lr_actor: 3.0e-4
+  lr_critic: 3.0e-4
+  lr_alpha: 3.0e-4
+  gamma: 0.99
+  exploration_noise: pink   # roll-out only
+  alpha_weight_decay: 1.0e-3
+  tau: 0.005   # Table II
+  alpha_init: 1.0
+  target_entropy: -2.0   # Table II
+  critic_grad_clip: 0.25   # Table II
+  actor_grad_clip: 1.0
+  q_target_clamp: null
+  log_alpha_min: -10.0
+  alpha_min: null
+  actor_q_reduction: all
+seed: 2
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 50000
+warmup_episodes: 10
+update_every: 3          # matches the FFN lanes' cadence
+actor_update_every: 5    # actor therefore runs every 15 steps, as in study1
+pad_mode: edge
+save_every: 2

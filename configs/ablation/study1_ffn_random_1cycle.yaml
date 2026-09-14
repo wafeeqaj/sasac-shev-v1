@@ -1,0 +1,30 @@
+# Ablation study 1: FFN-FFN, 1 HFET cycle (~13 min), random replay sampling.
+# "fixed_hfet_1" slices the first 779 s of the ten-cycle trace.
+name: study1_ffn_random_1cycle
+description: "Study 1: FFN-FFN, 1 HFET cycle, random sampling (env reconstructed)"
+env: fixed_hfet_1
+agent:
+  actor: ffn
+  critic: ffn
+  hidden_actor: 128
+  hidden_critic: 128
+  lr_actor: 3.0e-4
+  lr_critic: 3.0e-4
+  lr_alpha: 3.0e-4
+  alpha_weight_decay: 1.0e-3
+  gamma: 0.99
+  tau: 0.005
+  alpha_init: 1.0
+  target_entropy: -2.0
+  critic_grad_clip: null
+  actor_grad_clip: null
+  log_alpha_min: -10.0
+seed: 2
+num_episodes: 500                 # notebook loop was 8000; paper reports 500
+batch_size: 64
+buffer_capacity: 10000000
+sampling: random
+warmup_transitions: 70000
+update_every: 3
+actor_update_every: 5
+save_every: 2

@@ -1,0 +1,29 @@
+# Ablation study 1: FFN-FFN, 10 HFET cycles (~130 min), random replay sampling.
+name: study1_ffn_random_10cycle
+description: "Study 1: FFN-FFN, 10 HFET cycles, random sampling"
+env: fixed_hfet_10
+agent:
+  actor: ffn
+  critic: ffn
+  hidden_actor: 128
+  hidden_critic: 128
+  lr_actor: 3.0e-4
+  lr_critic: 3.0e-4
+  lr_alpha: 3.0e-4
+  alpha_weight_decay: 1.0e-3
+  gamma: 0.99
+  tau: 0.005
+  alpha_init: 1.0
+  target_entropy: -2.0
+  critic_grad_clip: null
+  actor_grad_clip: null
+  log_alpha_min: -10.0
+seed: 2
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 10000000
+sampling: random
+warmup_transitions: 70000
+update_every: 3
+actor_update_every: 5
+save_every: 2

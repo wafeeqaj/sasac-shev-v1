@@ -1,0 +1,40 @@
+# Ablation study 4: continued training of the study-3 DT-GRU (k=100) with random initial
+# SOC only. No configuration for this study was preserved; "vary_soc" is the study-5 env with the
+# duration multiplier disabled. Set load_from to the study-3 checkpoint prefix.
+name: study4_dt_gru_vary_soc
+description: "Study 4: DT-GRU k=100, random initial SOC (env reconstructed)"
+env: vary_soc
+load_from: results/runs/study3_dt_gru_k100/study3_dt_gru_k100
+agent:
+  actor: dt
+  critic: gru
+  context: 100
+  hidden_critic: 128
+  gru_layers: 2
+  dt: {hidden_size: 128, num_heads: 4, num_layers: 1}
+  lr_actor: 1.0e-4   # Table II
+  lr_critic: 1.0e-4   # Table II
+  lr_alpha: 3.0e-4
+  gamma: 0.99
+  exploration_noise: pink   # roll-out only
+  alpha_weight_decay: 1.0e-3
+  tau: 0.005   # Table II
+  alpha_init: 0.1
+  target_entropy: -2.0   # Table II
+  critic_grad_clip: 0.25   # Table II
+  actor_grad_clip: 1.0
+  log_alpha_min: -10.0
+  actor_q_reduction: all
+  dt_std_scaled_by_alpha: false
+  dt_history_actions: normalized
+seed: 2
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 5000
+warmup_episodes: 10
+update_every: 3          # matches the FFN lanes' cadence
+actor_update_every: 5    # actor (transformer fwd+bwd) therefore runs every 15 steps, as in study1
+pad_mode: edge
+rtg_init: 0.95
+rtg_update: subtract_normalized
+save_every: 2

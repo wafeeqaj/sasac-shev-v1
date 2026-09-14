@@ -1,0 +1,31 @@
+# Ablation study 4: FFN-FFN continued with random initial SOC only. No notebook for this
+# study was preserved; settings follow the FFN-FFN runs on the "vary_soc" environment.
+name: study4_ffn_ffn_vary_soc
+description: "Study 4: FFN-FFN, random initial SOC only (env reconstructed)"
+env: vary_soc
+load_from: results/runs/study1_ffn_random_10cycle/study1_ffn_random_10cycle
+agent:
+  actor: ffn
+  critic: ffn
+  hidden_actor: 128
+  hidden_critic: 128
+  lr_actor: 3.0e-5
+  lr_critic: 3.0e-5
+  lr_alpha: 3.0e-5
+  alpha_weight_decay: 1.0e-3
+  gamma: 0.99
+  tau: 0.005
+  alpha_init: 0.2
+  target_entropy: -2.0
+  critic_grad_clip: null
+  actor_grad_clip: null
+  log_alpha_min: -10.0
+seed: 2
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 10000000
+sampling: random
+warmup_transitions: 70000
+update_every: 3
+actor_update_every: 5
+save_every: 2

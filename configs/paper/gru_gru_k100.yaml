@@ -1,0 +1,33 @@
+# GRU actor + GRU critic, k = 100 (paper: "SAC-GRU", Table II column "GRU").
+name: gru_gru_k100
+description: "GRU-GRU agent, k=100, Table II hyper-parameters"
+env: vary_soc_duration
+agent:
+  actor: gru
+  critic: gru
+  context: 100
+  hidden_actor: 128
+  hidden_critic: 128
+  gru_layers: 2
+  lr_actor: 1.0e-4
+  lr_critic: 1.0e-4
+  lr_alpha: 1.0e-4
+  gamma: 0.99
+  tau: 0.005
+  alpha_init: 1.0
+  target_entropy: -2.0   # Table II
+  critic_grad_clip: 0.25
+  actor_grad_clip: 1.0
+  q_target_clamp: null
+  log_alpha_min: -10.0
+  alpha_min: null
+  actor_q_reduction: all
+seed: 1
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 500
+warmup_episodes: 10
+update_every: 3          # matches the FFN lanes' cadence
+actor_update_every: 5    # actor therefore runs every 15 steps, as in study1
+pad_mode: edge
+save_every: 2

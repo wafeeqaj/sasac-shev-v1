@@ -1,0 +1,41 @@
+# Ablation study 2: DT actor + DT (transformer) critic, k = 1.
+# The transformer critic is trained with the ordinary
+# Bellman target (dt_critic_loss: bellman); set dt_critic_loss: rtg_regression for the
+# return-to-go regression described in the paper.
+name: study2_dt_dt
+description: "Study 2: DT actor / DT critic, k=1, fixed HFETx10"
+env: fixed_hfet_10
+agent:
+  actor: dt
+  critic: dt
+  context: 1
+  dt: {hidden_size: 128, num_heads: 4, num_layers: 1}
+  dt_critic: {hidden_size: 128, num_heads: 8, num_layers: 6, n_ctx: 512}
+  lr_actor: 1.0e-4   # Table II
+  lr_critic: 1.0e-4   # Table II
+  lr_alpha: 3.0e-4
+  gamma: 0.99
+  exploration_noise: pink   # roll-out only
+  alpha_weight_decay: 1.0e-3
+  tau: 0.005   # Table II
+  alpha_init: 0.1
+  target_entropy: -2.0   # Table II
+  critic_grad_clip: 0.25   # Table II
+  actor_grad_clip: 1.0
+  log_alpha_min: -10.0
+  alpha_min: null
+  actor_q_reduction: all
+  dt_std_scaled_by_alpha: false
+  dt_critic_loss: bellman
+  dt_history_actions: normalized
+seed: 2
+num_episodes: 500
+batch_size: 64
+buffer_capacity: 5000
+warmup_episodes: 10
+update_every: 3          # matches the FFN lanes' cadence
+actor_update_every: 5    # actor (transformer fwd+bwd) therefore runs every 15 steps, as in study1
+pad_mode: edge
+rtg_init: 0.95
+rtg_update: subtract_normalized
+save_every: 2
